@@ -1,0 +1,24 @@
+services:
+  proxy:
+    image: 182399681516.dkr.ecr.ap-southeast-2.amazonaws.com/grande/dev-proxy:latest
+    container_name: proxy
+    ports:
+      - "80:80" # Proxy is accessible on host port 80
+    networks:
+      - app-network
+
+  dev-bo:
+    environment:
+      PORT: 5100 # Ensure the app listens on port 5100 internally
+      SENTRY_URL: https://77b56635439772e5937fabf56f913232@sentry.mgc.pw/13
+      NODE_ENV: development
+      DATABASE_SERVER: mongodb+srv://HiuPOS:HiuSharkPOS@cluster0.iive8c8.mongodb.net
+    image: 182399681516.dkr.ecr.ap-southeast-2.amazonaws.com/grande/dev-bo:latest
+    container_name: dev-bo
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    name: services_app-network
+    driver: bridge
